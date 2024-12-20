@@ -18,9 +18,10 @@ export class CategoriesService {
   ) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
+    const creationDate = new Date();
     const newCategory = this.categoryRepository.create({
-      created_at: new Date(),
-      updated_at: new Date(),
+      created_at: creationDate,
+      updated_at: creationDate,
     });
 
     const category = await this.categoryRepository.save(newCategory);
@@ -33,8 +34,8 @@ export class CategoriesService {
         name: value,
         locale: { id: LOCALES[langCode] },
         category: { id: category.id },
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: creationDate,
+        updated_at: creationDate,
       });
 
       await this.categoryTranslationRepository.save(newCategoryTranslation);
