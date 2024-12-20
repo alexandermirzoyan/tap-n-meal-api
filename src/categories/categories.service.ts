@@ -64,8 +64,24 @@ export class CategoriesService {
     return { ...category, translations: categoryTranslations };
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    const updateRequest = Object.entries(updateCategoryDto);
+    const updatedAtDate = new Date();
+
+    for (const [key, value] of updateRequest) {
+      const [, langCode] = key.split('_');
+      await this.categoryTranslationRepository.update(
+        {
+          category: { id },
+          locale: { id: LOCALES[langCode] },
+        },
+        { name: value, updated_at: updatedAtDate },
+      );
+    }
+
+    await this.categoryRepository.update({ id }, { updated_at: updatedAtDate });
+
+    return this.categoryRepository.findOneBy({ id });
   }
 
   remove(id: number) {
