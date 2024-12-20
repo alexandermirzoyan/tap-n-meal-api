@@ -31,8 +31,8 @@ export class CategoriesService {
 
       const newCategoryTranslation = this.categoryTranslationRepository.create({
         name: value,
-        locale_id: LOCALES[langCode],
-        category_id: category.id,
+        locale: { id: LOCALES[langCode] },
+        category: { id: category.id },
         created_at: new Date(),
         updated_at: new Date(),
       });
@@ -43,8 +43,16 @@ export class CategoriesService {
     return category;
   }
 
-  findAll() {
-    return `This action returns all categories`;
+  findAll(language: string) {
+    return this.categoryTranslationRepository.find({
+      relations: ['category'],
+      select: {
+        id: true,
+        name: true,
+        category: { id: true },
+      },
+      where: { locale: { id: LOCALES[language] } },
+    });
   }
 
   findOne(id: number) {
