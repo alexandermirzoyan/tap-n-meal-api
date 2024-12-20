@@ -15,11 +15,11 @@ export class ProductNameTranslation {
 
   @ManyToOne(() => Product, (product) => product.id)
   @JoinColumn({ name: 'product_id' })
-  product_id: number;
+  product: Product;
 
   @ManyToOne(() => Locale, (locale) => locale.id)
   @JoinColumn({ name: 'locale_id' })
-  locale_id: number;
+  locale: Locale;
 
   @Column()
   name: string;

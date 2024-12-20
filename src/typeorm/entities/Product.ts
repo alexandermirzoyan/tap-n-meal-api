@@ -23,7 +23,7 @@ export class Product {
 
   @ManyToOne(() => Tag, (tag) => tag.id)
   @JoinColumn({ name: 'tag_id' })
-  tag_id: number;
+  tag: Tag;
 
   @Column()
   created_at: Date;
