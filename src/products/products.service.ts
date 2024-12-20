@@ -21,13 +21,14 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto) {
+    const creationDate = new Date();
     const newProduct = this.productRepository.create({
       price: createProductDto.price,
       quantity: createProductDto.quantity,
       image_src: createProductDto.image_src,
       ...(createProductDto.tag_id && { tag: { id: createProductDto.tag_id } }),
-      created_at: new Date(),
-      updated_at: new Date(),
+      created_at: creationDate,
+      updated_at: creationDate,
     });
 
     const product = await this.productRepository.save(newProduct);
@@ -37,8 +38,8 @@ export class ProductsService {
         product: { id: product.id },
         locale: { id: LOCALES[key] },
         name: value,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: creationDate,
+        updated_at: creationDate,
       });
 
       await this.productNameRepository.save(productName);
@@ -49,8 +50,8 @@ export class ProductsService {
         product: { id: product.id },
         locale: { id: LOCALES[key] },
         description: value,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: creationDate,
+        updated_at: creationDate,
       });
 
       await this.productDescriptionRepository.save(productDescription);
