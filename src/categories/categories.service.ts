@@ -55,8 +55,13 @@ export class CategoriesService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: number) {
+    const category = await this.categoryRepository.findOne({ where: { id } });
+    const categoryTranslations = await this.categoryTranslationRepository.find({
+      where: { category: { id } },
+    });
+
+    return { ...category, translations: categoryTranslations };
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {
