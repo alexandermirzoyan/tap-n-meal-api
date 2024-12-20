@@ -12,6 +12,7 @@ import { Product } from './typeorm/entities/Product';
 import { ProductNameTranslation } from './typeorm/entities/ProductNameTranslation';
 import { ProductDescriptionTranslation } from './typeorm/entities/ProductDescriptionTranslation';
 import { CategoriesModule } from './categories/categories.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { CategoriesModule } from './categories/categories.module';
       synchronize: true,
     }),
     CategoriesModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
