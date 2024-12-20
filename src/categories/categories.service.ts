@@ -84,7 +84,17 @@ export class CategoriesService {
     return this.categoryRepository.findOneBy({ id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    const categoryTranslations = await this.categoryTranslationRepository.find({
+      select: { id: true },
+      where: { category: { id } },
+    });
+
+    const ids = categoryTranslations.map((t) => t.id);
+    for (const translationId of ids) {
+      await this.categoryTranslationRepository.delete({ id: translationId });
+    }
+
+    return this.categoryRepository.delete({ id });
   }
 }
