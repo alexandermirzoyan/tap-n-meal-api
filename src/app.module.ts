@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Locale } from './typeorm/entities/Locale';
 import { Tag } from './typeorm/entities/Tag';
+import { Image } from './typeorm/entities/Image';
 import { Category } from './typeorm/entities/Category';
 import { CategoryTranslation } from './typeorm/entities/CategoryTranslation';
 import { Product } from './typeorm/entities/Product';
@@ -27,6 +28,7 @@ import { ProductsModule } from './products/products.module';
       entities: [
         Locale,
         Tag,
+        Image,
         Category,
         CategoryTranslation,
         Product,
