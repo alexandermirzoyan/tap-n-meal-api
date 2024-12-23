@@ -7,10 +7,4 @@ export class Image {
 
   @Column()
   path: string;
-
-  @Column()
-  created_at: Date;
-
-  @Column()
-  updated_at: Date;
 }
