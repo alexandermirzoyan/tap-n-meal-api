@@ -2,7 +2,6 @@ import {
   Column,
   Entity,
   JoinColumn,
-  OneToOne,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -20,7 +19,7 @@ export class Product {
   @Column()
   quantity: number;
 
-  @OneToOne(() => Image, (image) => image.id)
+  @ManyToOne(() => Image, (image) => image.id)
   @JoinColumn({ name: 'image_id' })
   image: Image;
 
