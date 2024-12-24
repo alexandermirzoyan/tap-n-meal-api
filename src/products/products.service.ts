@@ -4,10 +4,13 @@ import { Repository } from 'typeorm';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+
 import { Product } from '../typeorm/entities/Product';
 import { ProductNameTranslation } from '../typeorm/entities/ProductNameTranslation';
 import { ProductDescriptionTranslation } from '../typeorm/entities/ProductDescriptionTranslation';
+
 import { LOCALES } from '../constants/locales';
+import { ITEMS_PER_PAGE } from '../constants/pagination';
 
 @Injectable()
 export class ProductsService {
@@ -61,8 +64,34 @@ export class ProductsService {
     return product;
   }
 
-  findAll() {
-    return `This action returns all products`;
+  async findAll(language: string, page = 1) {
+    const products = await this.productRepository.find({
+      take: ITEMS_PER_PAGE,
+      skip: (page - 1) * ITEMS_PER_PAGE,
+      relations: {
+        category: true,
+        image: true,
+        tag: true,
+        name: { locale: true },
+        description: { locale: true },
+      },
+      where: {
+        name: {
+          locale: { id: LOCALES[language] },
+        },
+        description: {
+          locale: { id: LOCALES[language] },
+        },
+      },
+    });
+
+    const normalizedProducts: any = [...products];
+    for (const product of normalizedProducts) {
+      product.name = product.name[0].name;
+      product.description = product.description[0].description;
+    }
+
+    return normalizedProducts;
   }
 
   findOne(id: number) {
