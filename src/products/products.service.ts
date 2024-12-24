@@ -25,6 +25,7 @@ export class ProductsService {
     const newProduct = this.productRepository.create({
       price: createProductDto.price,
       quantity: createProductDto.quantity,
+      category: { id: createProductDto.category_id },
       image: { id: createProductDto.image_id },
       ...(createProductDto.tag_id && { tag: { id: createProductDto.tag_id } }),
       created_at: creationDate,

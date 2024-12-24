@@ -5,6 +5,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Category } from './Category';
 import { Image } from './Image';
 import { Tag } from './Tag';
 
@@ -18,6 +19,10 @@ export class Product {
 
   @Column()
   quantity: number;
+
+  @ManyToOne(() => Category, (category) => category.id)
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
 
   @ManyToOne(() => Image, (image) => image.id)
   @JoinColumn({ name: 'image_id' })
