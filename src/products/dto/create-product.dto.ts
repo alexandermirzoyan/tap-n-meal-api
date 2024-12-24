@@ -1,7 +1,7 @@
 export class CreateProductDto {
   price: number;
   quantity: number;
-  image_src: string;
+  image_id: number;
   tag_id?: number;
   name: {
     en: string;
