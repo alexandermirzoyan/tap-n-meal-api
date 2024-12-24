@@ -14,6 +14,7 @@ import { ProductNameTranslation } from './typeorm/entities/ProductNameTranslatio
 import { ProductDescriptionTranslation } from './typeorm/entities/ProductDescriptionTranslation';
 import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ProductsModule } from './products/products.module';
     }),
     CategoriesModule,
     ProductsModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
