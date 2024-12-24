@@ -3,11 +3,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category } from './Category';
 import { Image } from './Image';
 import { Tag } from './Tag';
+import { ProductNameTranslation } from './ProductNameTranslation';
+import { ProductDescriptionTranslation } from './ProductDescriptionTranslation';
 
 @Entity('products')
 export class Product {
@@ -37,4 +40,13 @@ export class Product {
 
   @Column()
   updated_at: Date;
+
+  @OneToMany(() => ProductNameTranslation, (translation) => translation.product)
+  name: ProductNameTranslation[];
+
+  @OneToMany(
+    () => ProductDescriptionTranslation,
+    (translation) => translation.product,
+  )
+  description: ProductDescriptionTranslation[];
 }
