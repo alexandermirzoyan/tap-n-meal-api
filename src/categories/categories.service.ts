@@ -58,6 +58,7 @@ export class CategoriesService {
     const category = await this.categoryRepository.findOne({ where: { id } });
     const categoryTranslations = await this.categoryTranslationRepository.find({
       where: { category: { id } },
+      relations: { locale: true },
     });
 
     return { ...category, translations: categoryTranslations };
