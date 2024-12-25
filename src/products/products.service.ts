@@ -36,14 +36,17 @@ export class ProductsService {
     });
 
     const product = await this.productRepository.save(newProduct);
+    const getCommonProps = (key: string) => ({
+      product: { id: product.id },
+      locale: { id: LOCALES[key] },
+      created_at: creationDate,
+      updated_at: creationDate,
+    });
 
     for (const [key, value] of Object.entries(createProductDto.name)) {
       const productName = this.productNameRepository.create({
-        product: { id: product.id },
-        locale: { id: LOCALES[key] },
+        ...getCommonProps(key),
         name: value,
-        created_at: creationDate,
-        updated_at: creationDate,
       });
 
       await this.productNameRepository.save(productName);
@@ -51,11 +54,8 @@ export class ProductsService {
 
     for (const [key, value] of Object.entries(createProductDto.description)) {
       const productDescription = this.productDescriptionRepository.create({
-        product: { id: product.id },
-        locale: { id: LOCALES[key] },
+        ...getCommonProps(key),
         description: value,
-        created_at: creationDate,
-        updated_at: creationDate,
       });
 
       await this.productDescriptionRepository.save(productDescription);
