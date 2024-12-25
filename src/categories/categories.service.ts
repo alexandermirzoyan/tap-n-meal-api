@@ -25,14 +25,11 @@ export class CategoriesService {
     });
 
     const category = await this.categoryRepository.save(newCategory);
-    const createRequest = Object.entries(createCategoryDto);
 
-    for (const [key, value] of createRequest) {
-      const [, langCode] = key.split('_');
-
+    for (const [language, value] of Object.entries(createCategoryDto.name)) {
       const newCategoryTranslation = this.categoryTranslationRepository.create({
         name: value,
-        locale: { id: LOCALES[langCode] },
+        locale: { id: LOCALES[language] },
         category: { id: category.id },
         created_at: creationDate,
         updated_at: creationDate,
@@ -44,16 +41,17 @@ export class CategoriesService {
     return category;
   }
 
-  findAll(language: string) {
-    return this.categoryTranslationRepository.find({
+  async findAll(language: string) {
+    const categories = await this.categoryTranslationRepository.find({
       relations: ['category'],
       select: {
-        id: true,
         name: true,
         category: { id: true },
       },
       where: { locale: { id: LOCALES[language] } },
     });
+
+    return categories.map((c) => ({ id: c.category.id, name: c.name }));
   }
 
   async findOne(id: number) {
@@ -66,15 +64,13 @@ export class CategoriesService {
   }
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    const updateRequest = Object.entries(updateCategoryDto);
     const updatedAtDate = new Date();
 
-    for (const [key, value] of updateRequest) {
-      const [, langCode] = key.split('_');
+    for (const [language, value] of Object.entries(updateCategoryDto.name)) {
       await this.categoryTranslationRepository.update(
         {
           category: { id },
-          locale: { id: LOCALES[langCode] },
+          locale: { id: LOCALES[language] },
         },
         { name: value, updated_at: updatedAtDate },
       );
