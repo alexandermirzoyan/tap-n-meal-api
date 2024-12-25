@@ -122,8 +122,49 @@ export class ProductsService {
     return normalizedProduct;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    const updateDate = new Date();
+    const updatedProduct = await this.productRepository.update(
+      { id },
+      {
+        price: updateProductDto.price,
+        quantity: updateProductDto.quantity,
+        category: { id: updateProductDto.category_id },
+        image: { id: updateProductDto.image_id },
+        ...(updateProductDto.tag_id && {
+          tag: { id: updateProductDto.tag_id },
+        }),
+        updated_at: updateDate,
+      },
+    );
+
+    for (const [key, value] of Object.entries(updateProductDto.name)) {
+      await this.productNameRepository.update(
+        {
+          locale: { id: LOCALES[key] },
+          product: { id },
+        },
+        {
+          name: value,
+          updated_at: updateDate,
+        },
+      );
+    }
+
+    for (const [key, value] of Object.entries(updateProductDto.description)) {
+      await this.productDescriptionRepository.update(
+        {
+          locale: { id: LOCALES[key] },
+          product: { id },
+        },
+        {
+          description: value,
+          updated_at: updateDate,
+        },
+      );
+    }
+
+    return updatedProduct;
   }
 
   remove(id: number) {
