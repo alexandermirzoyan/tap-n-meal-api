@@ -94,7 +94,7 @@ export class ProductsService {
     return normalizedProducts;
   }
 
-  async findOne(language: string, id: number) {
+  async findOne(language: string, id: number, authorization?: string) {
     const product = await this.productRepository.findOne({
       relations: {
         category: true,
@@ -113,6 +113,10 @@ export class ProductsService {
         },
       },
     });
+
+    if (authorization) {
+      return product;
+    }
 
     const normalizedProduct: any = { ...product };
     normalizedProduct.name = normalizedProduct.name[0].name;
