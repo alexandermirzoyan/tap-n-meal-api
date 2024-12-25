@@ -94,8 +94,32 @@ export class ProductsService {
     return normalizedProducts;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(language: string, id: number) {
+    const product = await this.productRepository.findOne({
+      relations: {
+        category: true,
+        image: true,
+        tag: true,
+        name: { locale: true },
+        description: { locale: true },
+      },
+      where: {
+        id,
+        name: {
+          locale: { id: LOCALES[language] },
+        },
+        description: {
+          locale: { id: LOCALES[language] },
+        },
+      },
+    });
+
+    const normalizedProduct: any = { ...product };
+    normalizedProduct.name = normalizedProduct.name[0].name;
+    normalizedProduct.description =
+      normalizedProduct.description[0].description;
+
+    return normalizedProduct;
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {

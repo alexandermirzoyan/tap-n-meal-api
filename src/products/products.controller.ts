@@ -28,8 +28,8 @@ export class ProductsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(+id);
+  findOne(@Param('id') id: string, @Headers('Language') language: string) {
+    return this.productsService.findOne(language, +id);
   }
 
   @Patch(':id')
