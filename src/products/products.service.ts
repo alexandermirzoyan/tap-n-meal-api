@@ -94,6 +94,11 @@ export class ProductsService {
     return normalizedProducts;
   }
 
+  async getTotalProductsCount() {
+    const [, count] = await this.productRepository.findAndCount();
+    return { total: count };
+  }
+
   async findOne(language: string, id: number, authorization?: string) {
     const product = await this.productRepository.findOne({
       relations: {

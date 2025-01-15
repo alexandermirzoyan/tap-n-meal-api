@@ -27,6 +27,11 @@ export class ProductsController {
     return this.productsService.findAll(language, +page);
   }
 
+  @Get('/total')
+  getTotalProductsCount() {
+    return this.productsService.getTotalProductsCount();
+  }
+
   @Get(':id')
   findOne(
     @Param('id') id: string,
