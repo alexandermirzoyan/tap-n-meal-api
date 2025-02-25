@@ -23,8 +23,12 @@ export class ProductsController {
   }
 
   @Get()
-  findAll(@Headers('Language') language: string, @Query('page') page: string) {
-    return this.productsService.findAll(language, +page);
+  findAll(
+    @Headers('Language') language: string,
+    @Query('page') page: string,
+    @Query('category') category?: string,
+  ) {
+    return this.productsService.findAll(language, +page, category);
   }
 
   @Get('/total')

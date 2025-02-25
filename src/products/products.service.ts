@@ -64,7 +64,7 @@ export class ProductsService {
     return product;
   }
 
-  async findAll(language: string, page = 1) {
+  async findAll(language: string, page = 1, category?: string) {
     const products = await this.productRepository.find({
       take: ITEMS_PER_PAGE,
       skip: (page - 1) * ITEMS_PER_PAGE,
@@ -82,6 +82,7 @@ export class ProductsService {
         description: {
           locale: { id: LOCALES[language] },
         },
+        category: { id: category ? +category : null },
       },
     });
 
