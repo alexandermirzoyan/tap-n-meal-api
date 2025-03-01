@@ -14,9 +14,11 @@ import { CategoryTranslation } from './typeorm/entities/CategoryTranslation';
 import { Product } from './typeorm/entities/Product';
 import { ProductNameTranslation } from './typeorm/entities/ProductNameTranslation';
 import { ProductDescriptionTranslation } from './typeorm/entities/ProductDescriptionTranslation';
+import { Order } from './typeorm/entities/Order';
 import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
 import { ImagesModule } from './images/images.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -38,12 +40,14 @@ import { ImagesModule } from './images/images.module';
         Product,
         ProductNameTranslation,
         ProductDescriptionTranslation,
+        Order,
       ],
       synchronize: true,
     }),
     CategoriesModule,
     ProductsModule,
     ImagesModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
