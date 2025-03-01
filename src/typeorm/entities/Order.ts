@@ -30,6 +30,9 @@ export class Order {
   table: number;
 
   @Column()
+  payment_method: string;
+
+  @Column()
   created_at: Date;
 
   @Column()

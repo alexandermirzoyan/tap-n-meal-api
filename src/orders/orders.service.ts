@@ -25,6 +25,7 @@ export class OrdersService {
       const newOrder = this.orderRepository.create({
         uuid,
         product_id: product.id,
+        payment_method: createOrderDto.paymentMethod,
         table: createOrderDto.table,
         count: product.quantity,
         comment: product.comment,
