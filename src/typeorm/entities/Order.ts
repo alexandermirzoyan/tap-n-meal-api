@@ -1,12 +1,5 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-
-import { Product } from './Product';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { OrderProduct } from './OrderProduct';
 
 @Entity('orders')
 export class Order {
@@ -14,23 +7,13 @@ export class Order {
   id: number;
 
   @Column()
-  uuid: string;
-
-  @ManyToOne(() => Product, (product) => product.id)
-  @JoinColumn({ name: 'product_id' })
-  product_id: number;
-
-  @Column()
-  count: number;
-
-  @Column()
-  comment: string;
-
-  @Column()
   table: number;
 
   @Column()
   payment_method: string;
+
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
+  orderProducts: OrderProduct[];
 
   @Column()
   created_at: Date;

@@ -15,6 +15,7 @@ import { Product } from './typeorm/entities/Product';
 import { ProductNameTranslation } from './typeorm/entities/ProductNameTranslation';
 import { ProductDescriptionTranslation } from './typeorm/entities/ProductDescriptionTranslation';
 import { Order } from './typeorm/entities/Order';
+import { OrderProduct } from './typeorm/entities/OrderProduct';
 import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
 import { ImagesModule } from './images/images.module';
@@ -41,6 +42,7 @@ import { OrdersModule } from './orders/orders.module';
         ProductNameTranslation,
         ProductDescriptionTranslation,
         Order,
+        OrderProduct,
       ],
       synchronize: true,
     }),

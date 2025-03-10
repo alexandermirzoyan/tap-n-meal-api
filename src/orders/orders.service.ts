@@ -1,42 +1,49 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { v4 as uuidv4 } from 'uuid';
 
 import { Order } from '../typeorm/entities/Order';
 import { Product } from '../typeorm/entities/Product';
+import { OrderProduct } from '../typeorm/entities/OrderProduct';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { ITEMS_PER_PAGE } from '../constants/pagination';
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectRepository(Order)
     private orderRepository: Repository<Order>,
+    @InjectRepository(OrderProduct)
+    private orderProductRepository: Repository<OrderProduct>,
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
   ) {}
 
   async create(createOrderDto: CreateOrderDto) {
     const creationDate = new Date();
-    const orders = [];
-    const uuid = uuidv4();
+
+    const newOrder = this.orderRepository.create({
+      payment_method: createOrderDto.paymentMethod,
+      table: createOrderDto.table,
+      created_at: creationDate,
+      updated_at: creationDate,
+    });
+
+    await this.orderRepository.save(newOrder);
+    const orderProducts = [];
 
     for (const product of createOrderDto.products) {
-      const newOrder = this.orderRepository.create({
-        uuid,
-        product_id: product.id,
-        payment_method: createOrderDto.paymentMethod,
-        table: createOrderDto.table,
+      const newOrderProduct = this.orderProductRepository.create({
+        order: { id: newOrder.id },
+        product: { id: product.id },
         count: product.quantity,
         comment: product.comment,
-        created_at: creationDate,
-        updated_at: creationDate,
       });
 
-      orders.push(newOrder);
+      orderProducts.push(newOrderProduct);
     }
 
-    await this.orderRepository.save(orders);
+    await this.orderProductRepository.save(orderProducts);
 
     for (const product of createOrderDto.products) {
       await this.productRepository.update(
@@ -50,8 +57,16 @@ export class OrdersService {
     return { success: true };
   }
 
-  findAll() {
-    return `This action returns all orders`;
+  async findAll(language: string, page = 1) {
+    return await this.orderRepository.find({
+      take: ITEMS_PER_PAGE,
+      skip: (page - 1) * ITEMS_PER_PAGE,
+      relations: {
+        orderProducts: {
+          product: true,
+        },
+      },
+    });
   }
 
   findOne(id: number) {
