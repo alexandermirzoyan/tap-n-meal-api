@@ -79,4 +79,9 @@ export class OrdersService {
       },
     });
   }
+
+  async getTotalOrdersCount() {
+    const [, count] = await this.orderRepository.findAndCount();
+    return { total: count };
+  }
 }

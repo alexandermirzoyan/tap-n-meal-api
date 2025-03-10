@@ -24,6 +24,11 @@ export class OrdersController {
     return this.ordersService.findAll(language, +page);
   }
 
+  @Get('/total')
+  getTotalOrdersCount() {
+    return this.ordersService.getTotalOrdersCount();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.ordersService.findOne(+id);
