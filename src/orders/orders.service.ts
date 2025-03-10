@@ -69,7 +69,14 @@ export class OrdersService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne(id: number) {
+    return await this.orderRepository.findOne({
+      where: { id },
+      relations: {
+        orderProducts: {
+          product: true,
+        },
+      },
+    });
   }
 }
