@@ -61,6 +61,9 @@ export class OrdersService {
     return await this.orderRepository.find({
       take: ITEMS_PER_PAGE,
       skip: (page - 1) * ITEMS_PER_PAGE,
+      order: {
+        created_at: 'desc',
+      },
       relations: {
         orderProducts: {
           product: true,
