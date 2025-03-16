@@ -27,8 +27,9 @@ export class ProductsController {
     @Headers('Language') language: string,
     @Query('page') page: string,
     @Query('category') category?: string,
+    @Query('search') search?: string,
   ) {
-    return this.productsService.findAll(language, +page, category);
+    return this.productsService.findAll(language, +page, category, search);
   }
 
   @Get('/total')

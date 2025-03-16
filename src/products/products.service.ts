@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -64,7 +64,12 @@ export class ProductsService {
     return product;
   }
 
-  async findAll(language: string, page = 1, category?: string) {
+  async findAll(
+    language: string,
+    page = 1,
+    category?: string,
+    search?: string,
+  ) {
     const products = await this.productRepository.find({
       take: ITEMS_PER_PAGE,
       skip: (page - 1) * ITEMS_PER_PAGE,
@@ -78,6 +83,7 @@ export class ProductsService {
       where: {
         name: {
           locale: { id: LOCALES[language] },
+          name: search ? ILike(`%${search}%`) : undefined,
         },
         description: {
           locale: { id: LOCALES[language] },
